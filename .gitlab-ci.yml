@@ -1,0 +1,16 @@
+image: docker:latest
+
+services:
+  - docker:18.09.7-dind
+
+stages:
+  - deploy
+
+deploy_prod:
+  stage: deploy
+  only:
+    - master
+  script:
+    - docker ps
+    - docker-compose up --build -d
+  environment:

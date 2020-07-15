@@ -1,0 +1,18 @@
+CREATE TABLE messages(
+        id SERIAL PRIMARY KEY,
+        text VARCHAR(1000) NOT NULL,
+        time TIMESTAMP NOT NULL,
+        user_id INT NOT NULL,
+        room_id INT NOT NULL,
+        FOREIGN KEY (user_id) references users(id) ON DELETE CASCADE,
+        FOREIGN KEY (room_id) references rooms(id) ON DELETE CASCADE
+);
+
+CREATE TABLE user_room(
+        user_id INT NOT NULL,
+        room_id INT NOT NULL,
+        PRIMARY KEY (user_id, room_id),
+        FOREIGN KEY (user_id) references users(id) ON UPDATE CASCADE,
+        FOREIGN KEY (room_id) references rooms(id) ON UPDATE CASCADE
+
+);

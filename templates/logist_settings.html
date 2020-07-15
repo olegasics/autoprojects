@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link href="{{ url_for('static', filename='css/logist_styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/templates/checkbox_logist.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/templates/create_entity.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/templates/patch_entity.js')}}"></script>
+    
+</head>
+<body>
+<div id="main">
+    <div id="cssmenu">
+ 
+        <nav>
+        <ul>
+            <li><img style="
+                margin-left: -400px;
+                margin-bottom: -5px;"
+                src='/static/images/fluidbusiness.ru' width="30" height="25"></li>
+            <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+            <li><a href="{{ url_for('HomeView:get') }}"><span>Home</span></a></li>
+            <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+            <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+            <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+            <li class='last'><a href="{{url_for('LogistsView:get')}}"><span>Logists</span></a></li>
+            <li class='last'><a href="{{url_for('PaymentsView:get')}}"><span>Payments</span></a></li>
+            <div class="profile">
+                <li ><a href="#"><span>{{current_user.first_name}} {{current_user.last_name}}</span></a></li>
+            </div>
+         </ul>
+        </nav>
+    </div>
+    <div id="content">
+        
+        <div id="orders" style="position: relative">
+            <div>
+                <form method="post" action="/logistics/">
+                    <button type="submit">Update</button>
+
+                </form>
+            <input type="checkbox"  id="shest1" {% if ended == '1' %} checked {% endif %}>
+            <span>Not ended</span>
+            </div>
+            <table>
+                <tr class="custom-order">
+                    <th> 
+                        <input id='custom_order_project' style="width: 80px;" placeholder="Project name" type="text">
+                    </th>
+                    <th> 
+                        <input style="width: 80px;" id='custom_order_invoice' placeholder="Invoice" type="text">
+                    </th>
+                    <th>     
+                        <input id='custom_order_cargo' style="width: 80px;" placeholder="Cargo" type="text">
+                    </th>
+                
+                    <th> 
+                        <select id='custom_order_status'>
+                            <option value="Sent">Ожидает забора</option>
+                            <option value="In transit">Груз в пути</option>
+                            <option value="Delivery">Доставлен</option>
+                            
+                        </select>
+                    </th>
+                    <th>
+                        <input style="width: 80px;" placeholder="Перевозчик" id='custom_order_carrier' type="text">
+                    </th>
+                    <th>
+                        <input style="width: 150px;" id='custom_order_sender' placeholder="Отправитель" type="text">
+                        <input style="width: 150px;" id='custom_order_send_city' placeholder="Город отправления" type="text">
+                        <input style="width: 150px;" id='custom_order_send_date' placeholder="Дата отправления" type="date">
+                    </th>
+                    <th>
+                        <input style="width: 150px;" id='custom_order_receiver' placeholder="Получатель" type="text">
+                        <input style="width: 150px;" id='custom_order_delivery_city' placeholder="Город получателя" type="text">
+                        <input style="width: 150px;" id='custom_order_delivery_date' placeholder="Дата получателя" type="date">
+                    </th>
+                    <th>
+                        <input style="width: 150px;" id='custom_order_document' placeholder="Накладная" type="text">
+                        <input style="width: 150px;" id='custom_order_sum' placeholder="Стоимость" type="text">
+                        <input style="width: 150px;" id='custom_order_carrier_info' placeholder="Данные на водителя" type="text">
+                    </th>
+                    <th>
+                        <input style="width: 50px;" id='custom_order_ttn' placeholder="ТТН #" type="text">
+                        <input style="width: 50px;" id='custom_order_weight' placeholder="Вес" type="text">
+                        <input style="width: 50px;" id='custom_order_volume' placeholder="Объем" type="text">
+                    </th>
+                    <th>
+                        <button id="save-custom-order" onclick="clickCreateCustomOrder()" type="submit">Add</button>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Проект</th>
+                    <th>Счет</th>
+                    <th>Наименование груза</th>
+                    <th>Статус</th>
+                    <th>Перевозчик</th>
+                    <th>Отправитель</th>
+                    <th>Получатель</th>
+                    <th>Накладная</th>
+                    <th>ТТН</th>
+                </tr>
+                {% for order in orders %}
+                   
+                    <tr>
+                        <td style="width: 80px;" >
+                            {% if order.projects %}
+                                {% for project in order.projects %}
+                                    <input style="width: 80px;" disabled  value="{{ project.name }}" type="text" id="project-name-{{order.id}}">
+                                {% endfor %}
+                            {% else %}
+                                <input style="width: 80px;" placeholder="Номер проекта" type="text" id="project-name-{{order.id}}">
+                            {% endif %}  
+                        <td>
+                            {% if order.invoices %}
+                                <input style="width: 80px;" disabled value="{{ order.invoices[0].name }}" id="invoice-{{ order.id }}" type="text">
+                            {% else %}
+                                <input style="width: 80px;" placeholder="Счет" id="invoice-{{ order.id }}" type="text">
+                            {% endif %}
+                        </td> 
+                        <td>
+                            {% if order.cargo %}
+                                <span value="{{ order.cargo }}" style="width: 80px;"  id="cargo-text-{{ order.id }}" type="text">{{ order.cargo }}</span>
+                                <input  style="width: 80px;" hidden value="{{ order.cargo }}" id="cargo-edit-{{ order.id }}" type="text">
+                                {{ order.weight }} кг
+                                {{ order.volume }} м3
+                            {% else %}
+                                <span value="{{ order.cargo }}" style="width: 80px;" hidden  id="cargo-text-{{ order.id }}" type="text">{{ order.cargo }}</span>
+                                <input style="width: 80px;" placeholder="Наименование груза"  id="cargo-edit-{{ order.id }}" type="text">
+                                {{ order.weight }} кг
+                                {{ order.volume }} м3
+                            {% endif %}          
+                        </td>
+                        
+                        <td>{% if order.state_order %}
+                                {% if order.carrier != 'Деловые линии' %}
+                                    <span value="{{ order.state_order }}" id='order-state-text-{{ order.id }}'>{{ order.state_order }}</span> 
+                                    <select hidden id='custom-order-status-edit-{{ order.id }}'>
+                                        <option value="Ожидает забора">Ожидает забора</option>
+                                        <option value="В пути">Груз в пути</option>
+                                        <option value="Доставлен">Доставлен</option>
+                                    </select>
+                                {% else %}
+                                    <span value="{{ order.state_order }}" id='order-state-dl-{{ order.id }}'>{{ order.state_order }}</span>
+                                {% endif %}
+                            {% endif %}
+                            </td>
+                        <td>{{ order.carrier }}</td>
+                        <td>{{ order.sender }} <p>{{ order.date_send }}</p>
+                        </td>
+                        <td>{{ order.receiver}}
+                             <p>{{ order.date_delivery  }}</p></td>
+                        <td>{{ order.doc_number }}
+                            <p>{{ order.total_sum }} руб.</p>
+                        </td>
+                        <td>
+                            {% if order.ttn %}
+                                <input disabled style="width: 50px;" value="{{ order.ttn.name }}" id="ttn-{{ order.id }}" type="text">
+                            {% else %}
+                                <input style="width: 50px;" placeholder="TTN #" id="ttn-{{ order.id }}" type="text">
+                                
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if (order.projects or order.invoices or order.ttn) and not order.file_invoice_cargo %}
+                                <button hidden id="save-order-{{ order.id }}" onclick="clickSaveOrder('{{ order.id }}')" type="submit">Save</button>
+                                <button id="edit-order-{{ order.id }}" onclick="clickEditOrder('{{ order.id }}')" type="submit">Редактировать</button>
+
+                            <form hidden id='upload-invoice-form-{{ order.id }}' action="{{ url_for('LogistsView:upload', order_id=order.id) }}" method=post enctype=multipart/form-data>
+                                <p><input type=file name=file>
+                                    <input hidden name="order_id" value="{{ order.id }}">
+                                <input id="upload-invoice-{{ order.id }}" type=submit value="Загрузить счет">
+                            </form>
+
+
+                            {% else %}
+                                <button id="save-order-{{ order.id }}" onclick="clickSaveOrder('{{ order.id }}')" type="submit">Save</button>
+                                <button hidden id="edit-order-{{ order.id }}" onclick="clickEditOrder('{{ order.id }}')" type="submit">Edit</button>
+                            {% endif %}
+                            {% if order.file_invoice_cargo %}
+                                <span>Отправлено в оплату</span>
+
+                            {% else %}
+                               <button id="send-payment-order-{{ order.id }}" onclick="sendInPayment('{{ order.id }}')" type="submit">Отправить в оплату</button>
+                            {% endif %}
+                        </td>
+                
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div id="footer">
+        Development by Oleg Maslo
+    </div>
+</div>
+</body>
+</html>

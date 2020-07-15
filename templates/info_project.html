@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div id="main">
+        <div id="menu">
+            <div id="cssmenu">
+
+                <nav>
+                <ul>
+                    <li><img style="
+                        margin-left: -400px;
+                        margin-bottom: -5px;"
+                        src='/static/images/fluidbusiness.ru' width="40" height="25"></li>
+                    <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+                    <li><a href='#'><span>Home</span></a></li>
+                    <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+                    <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+                    <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+                    <li class='last'><a href="{{url_for('LogistsView:get')}}"'><span>Logists</span></a></li>
+                    <div class="profile">
+                        <li ><a href="#"><span>{{current_user.first_name}} {{current_user.last_name}}</span></a></li>
+                    </div>
+                 </ul>
+                </nav>
+            </div>
+
+            
+            <ul class="nav">
+                <li>
+                  <i class="fa fa-home"></i>
+                  
+                </li>
+                <li>
+                    <div class="animated slideInLeft"> <a href="{{url_for('OrdersView:get')}}{{ project.id }}">Перевозки</a></div>
+                   
+                  </li>
+                <li>
+                 
+                    <div class="animated slideInLeft"><a href="/providers/?project={{ project.id }}">Поставщики</a></div>
+                </li>
+                <li>
+                  
+                  <div class="animated slideInLeft">Документы</div>
+                </li>
+             
+            </ul>
+              
+              
+              
+            
+        </div>
+
+        <div id="content">
+
+
+            <p>Затраты по логистике: {{ total_sum }} рублей</p>
+            <p>Project: {{ project.name }}</p>
+            <p>Manager: {{ project.manager.name }}</p>
+            <p>Customer: {{ project.customer }}</p>
+            <p>Вес, прибывший на площадку: {{ total_weight_delivery }} кг</p>
+            <p>Вес, убывший с площадки: {{ total_weight_send }} кг</p>
+
+            </div>
+        </div>
+
+        <div id="footer">
+            Development bu Oleg Maslo
+        </div>
+        
+</div>
+</body>
+</html>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+A = [5, 3, 2, 4, 1]
+
+for k in range(len(A) - 2): # k = 0,
+    for i in range(len(A) - 1): # i = 0, i = 1, i = 2
+        if A[i] >= A[i+1]: # 5 >= 3, 5 >= 3,
+            A[ki], A[i+1] = A[i+1], A[i] # A[0] = 3, A[1] = 5,
+
+print[A]

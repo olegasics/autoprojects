@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Разбивка стоимости</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/templates/checkbox.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/templates/patch_entity.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/templates/create_entity.js')}}"></script>
+
+</head>
+<body>
+<div id="main">
+    <div id="menu">
+        <div id="cssmenu">
+ 
+            <nav>
+            <ul>
+                <li><img style="
+                    margin-left: -400px;
+                    margin-bottom: -5px;"
+                    src='/static/images/fluidbusiness.ru' width="40" height="25"></li>
+                <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+                <li><a href="{{ url_for('HomeView:get') }}"><span>Home</span></a></li>
+                <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+                <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+                <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+                <li class='last'><a href="{{url_for('LogistsView:get')}}"><span>Logists</span></a></li>
+                <li class='last'><a href="{{url_for('PaymentsView:get')}}"><span>Payments</span></a></li>
+                <li class='last'><a href="#"><span>{{current_user.first_name}} {{current_user.last_name}}</span></a></li>
+             </ul>
+            </nav>
+        </div>
+        
+    </div>
+    <div id="content">
+       <form id='search' onsubmit="search()"> 
+            <input style="width: 150px;"  type="search" id='search_by_project' placeholder="Search by project" type="text">
+        </form>
+        <div id="orders" style="position: relative">
+            
+            <form method="get" action="/payments/update"> <button  >Update</button></form>
+            <table>
+                <tr>
+                    <th>
+                        <div id="number-project">Number Project</div>
+                    </th>
+                    <th>Заказчик</th>
+                    <th>Счет</th>
+                    <th>Статус</th>
+                    <th>Перевозчик</th>
+                    <th>Дата</th>
+                    <th>Сумма</th>
+                    <th>Объем</th>
+                    <th>Вес</th>
+                    <th>ТТН</th>
+                    <th>Город отправления</th>
+                    <th>Город получения</th>
+                    <th>Наименование груза</th>
+                </tr>
+                {% for payment in payments %}
+                <tr>
+                    <td>
+                        <div id="project">
+                            {% for project in payment.order.projects %}
+                                <div id="project-name-{{ payment.id }}"><a href="{{url_for('ProjectsView:get')}}{{project.id}}">{{project.name}}</a></div>
+                                <input hidden id="input-project-name-{{ payment.id }}" value={{ project.name }}>
+                                <div id="project-small-name">{{ project.manager.small_name }}</div>
+                            {% endfor %}
+                        </div>
+                    </td>
+                    <td>
+                        {% for project in payment.order.projects %}
+                            <div id="number">{{ project.customer}}</div>
+                        {% endfor %}
+                    </td>
+
+                    <td>{% if payment.order.carrier == 'Деловые линии' %}
+                            <a href="https://www.dellin.ru/cabinet/PDF/?mode=bill&docUID={{ payment.doc_uid }}">{{ payment.doc_number }}</a>
+                        {% else %}
+                            {{ payment.doc_number }}
+                        {% endif %}
+                    </td>
+
+                    <td>{% if payment.order.carrier == 'Деловые линии' %}
+                          {{ payment.state }}
+                        {% else  %}
+                            <span value="Оплачен" style="width: 100px" id='payment-state-text-{{ payment.id }}'>{{ payment.state }}</span>
+                            <select hidden style="width: 100px" id='custom-order-status-payment-{{ payment.id }}'>
+                                <option value="Передан в оплату">Передан в оплату</option>
+                                <option value="Ожидает разбирательств">Ожидает разбирательств</option>
+                                <option value="Ожидает согласования">Ожидает согласования</option>
+                                <option value="Оплачен">Оплачен</option>
+
+
+                        {% endif %}
+                    </td>
+                    <td>{{ payment.order.carrier }} </td>
+                    <td>{{ payment.date }} </td>
+                    <td> {% if payment.sum_ %}
+<!--                        <input type="checkbox" style="padding: 0"; id="paymentNDS-{{ payment.id }}" value="без НДС" checked >-->
+<!--                        <span>Без НДС</span>-->
+                            {{ payment.sum_ }} руб.
+                        {% else %}
+                            Суммы нет
+                        {% endif %}
+                    </td>
+                    <td>{{ payment.volume }}</td>
+                    <td>{{ payment.weight }}</td>
+                    <td>{% if payment.order %}
+                            {{ payment.order.ttn.name }}
+                        {% else %}
+                            NOT TTN
+                        {% endif %}
+                    </td>
+                    <td>{% if payment.order %}
+                            {{ payment.order.city_send }}
+                        {% else %}
+                            NOT
+                    {% endif %}
+                    </td>
+                    <td>{% if payment.order %}
+                            {{ payment.order.city_delivery }}
+                        {% else %}
+                            NOT
+                        {% endif %}
+                    </td>
+                    <td>{% if payment.order %}
+                        {{ payment.order.cargo }}
+                    {% else %}
+                        NOT
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if payment.order.carrier != 'Деловые линии' %}
+                      {% if payment.projects or payment.order.invoices or payment.order.ttn  or payment.payment_bool %}
+                            <button hidden id="save-payment-{{ payment.id }}" onclick="clickSavePayment('{{ payment.id }}')">Save</button>
+                            <button id="edit-payment-{{ payment.id }}" onclick="clickEditPayment('{{ payment.id }}')" >Редактировать</button>
+                        {% else %}
+                            <button id="save-payment-{{ payment.id }}" onclick="clickSavePayment('{{ payment.id }}')" >Save</button>
+                            <button hidden id="edit-payment-{{ payment.id }}" onclick="clickEditPayment('{{ payment.id }}')" >Edit</button>
+                        {% endif %}
+
+                    {% endif %}
+                    {% if payment.file_pp %}
+                           <form action="{{ url_for('PaymentsView:download', payment_id=payment.id, file=2) }}" method="get">
+                               <button>Скачать ПП</button>
+                           </form>
+                    {% endif %}
+
+                    <form action="{{ url_for('PaymentsView:download', payment_id=payment.id, file=1) }}" method="get">
+                       <button>Посмотреть счет</button>
+                   </form>
+
+                </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div id="footer">
+        Development by Oleg Maslo
+    </div>
+</div>
+</body>
+</html>

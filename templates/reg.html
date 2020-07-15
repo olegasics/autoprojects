@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/templates/reg_auth.js')}}"></script>
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+
+
+</head>
+<body>
+  <div id="main">
+      <div id="cssmenu">
+
+        <nav>
+        <ul>
+            <li><img style="
+                margin-left: -400px;
+                margin-bottom: -5px;"
+                src='/static/images/fluidbusiness.ru' width="30" height="25"></li>
+            <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+            <li><a href="{{ url_for('HomeView:get') }}"><span>Home</span></a></li>
+            <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+            <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+            <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+            <li class='last'><a href="{{url_for('LogistsView:get')}}"><span>Logists</span></a></li>
+            <li class='last'><a href="{{url_for('PaymentsView:get')}}"><span>Payments</span></a></li>
+            <div class="profile">
+                <li ><a href="#"><span>{{current_user.first_name}} {{current_user.last_name}}</span></a></li>
+            </div>
+         </ul>
+        </nav>
+    </div>
+        <div id="content">
+             {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                     {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+             {% endwith %}
+
+
+                <h2>Registration</h2>
+                <input placeholder="email" type="text" id="email">
+                <input placeholder="Password" type="password" id="password">
+                <input placeholder="Retype Password" type="password" id="password2">
+                <input placeholder="Your first_name" type="text" id="first_name">
+                <input placeholder="Your last_name" type="text" id="last_name">
+
+                <select id='position'>
+                    <option value="Директор">Директор</option>
+                    <option value="Логист">Логист</option>
+                    <option value="Бухгалтер">Бухгалтер</option>
+                    <option value="Руководитель проектов">Руководитель проектов</option>
+                    <option value="Секретарь">Секретарь</option>
+                    <option value="Инженер">Инженер</option>
+
+                </select>
+                 <button onclick="clickReg()">Registration</button>
+
+
+
+        <div id="footer">
+            There will be a section "About me"
+        </div>
+
+</body>
+</html>
+
+

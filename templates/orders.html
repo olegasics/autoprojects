@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Движение груза</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/templates/checkbox.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/templates/putch_order.js')}}"></script>
+
+</head>
+<body>
+<div id="main">
+    <div id="menu">
+        <div id="cssmenu">
+ 
+            <nav>
+            <ul>
+                <li><img style="
+                    margin-left: -400px;
+                    margin-bottom: -5px;"
+                    src='/static/images/fluidbusiness.ru' width="30" height="25"></li>
+                <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+                <li><a href="{{ url_for('HomeView:get') }}"><span>Home</span></a></li>
+                <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+                <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+                <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+                <li class='last'><a href="{{url_for('LogistsView:get')}}"><span>Logists</span></a></li>
+                <li class='last'><a href="{{ url_for('PaymentsView:get') }}"><span>Payments</span></a></li>
+                <div class="profile">
+                    <li ><a href="#"><span>{{current_user.first_name}} {{current_user.last_name}}</span></a></li>
+                </div>
+             </ul>
+            </nav>
+        </div>
+        
+    </div>
+    <div id="content">
+       <form id='search' onsubmit="search()"> 
+            <input style="width: 150px;"  type="search" id='search_by_project' placeholder="Search by project" type="text">
+        </form>
+        <div id="orders" style="position: relative">
+            <form method="get" action="{{ url_for('OrdersView:get') }}">
+                <label>
+                    <input type="checkbox" id="shest0" {% if ended == '1' %} checked {% endif %}>
+                    <span>Not ended</span>
+                </label>
+            </form>
+            <table>
+                <div class=table-main>
+                    <tr>
+                        <th> Number Project</th>
+                        <th>Заказчик</th>
+                        <th>Счет</th>
+                        <th>Статус</th>
+                        <th>Перевозчик</th>
+                        <th>Дата отправления</th>
+                        <th>Отправитель</th>
+                        <th>Получатель</th>
+                        <th>Дата доставки/ориентировочная</th>
+                        <th>Стоимость перевозки</th>
+                        <th>Трек номер</th>
+                    </tr>
+                </div>
+                {% for order in orders %}
+                <tr>
+                    <td>
+                        <div id="project">
+                            {% for project in order.projects %}
+                                <div id="number"><a href="{{url_for('ProjectsView:get')}}{{project.id}}">{{project.name}}</a></div>
+                            <div id="number"><a href="/managers/{{ project.manager.id }}">{{ project.manager.small_name}}</a></div>
+                            {% endfor %}
+                        </div>
+                    </td>
+                    <td> {% for project in order.projects %}
+                            <div id="number">{{ project.customer}}</div>      
+                        {% endfor %} </td>
+                    <td> {% for invoice in order.invoices %}
+                            {{invoice.name}} 
+                         {% endfor %}   
+                    </td>
+                    <td>{{ order.state_order }}</td>
+                    <td>{{ order.carrier }} </td>
+                    <td>{{ order.date_send }} </td>
+                    <td>{{ order.sender }}</td>
+                    <td>{{ order.receiver }}</td>
+                    <td>{% if order.state_order == 'Доставлен' %}
+                             {{ order.date_delivery }}
+                        {% else %}
+                            Ориентировочная - {{ order.date_delivery }}
+                        {% endif %}
+                    </td>  
+                    <td>{{ order.total_sum }} руб.</td>
+                    <td>{% for doc_number in order.doc_numbers %}
+                            {{ doc_number.doc_number }}
+                        {% endfor %}
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div id="footer">
+        Development by Oleg Maslo
+    </div>
+</div>
+</body>
+</html>

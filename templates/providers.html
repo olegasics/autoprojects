@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поставщики</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/templates/create_entity.js')}}"></script>
+</head>
+<body>
+    <div id="main">
+        <div id="menu">
+            <div id="cssmenu">
+
+                <nav>
+                <ul>
+                    <li><img style="
+                        margin-left: -400px;
+                        margin-bottom: -5px;"
+                        src='/static/images/fluidbusiness.ru' width="40" height="25"></li>
+                    <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+                    <li><a href='#'><span>Home</span></a></li>
+                    <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+                    <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+                    <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+                    <li class='last'><a href="{{url_for('LogistsView:get')}}"'><span>Logists</span></a></li>
+                    <div class="profile">
+                        <li ><a href="#"><span>{{current_user.first_name}} {{current_user.last_name}}</span></a></li>
+                    </div>
+                 </ul>
+                </nav>
+            </div>
+
+
+            <ul class="nav">
+                <li>
+                  <i class="fa fa-home"></i>
+
+                </li>
+                {% for provider in project.providers %}
+                    <li>
+                        <div class="animated slideInLeft"> <a href="#"></a>{{ provider.name }}</div>
+                    </li>
+                {% endfor %}
+        </div>
+    </div>
+        <div id="content">
+            <h1>Страница в разработке</h1>
+            <h2>Здесь будут информация о поставщиках проекта {{ project.name }} (счета, адреса, контактные лица)</h2>
+            <h3>Сейчас уже можно создать поставщика</h3>
+            <input placeholder="Наименование поставщика" id="name-provider" type="text">
+            <button id="create-provider" onclick="createProvider({{ project.id }})" type="submit" >Создать поставщика</button>
+
+
+            </div>
+        </div>
+
+        <div id="footer">
+            Development bu Oleg Maslo
+        </div>
+
+</div>
+</body>
+</html>
+
+</body>
+</html>

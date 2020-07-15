@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+
+</head>
+<body>
+  <div id="main">
+        <div id="cssmenu">
+
+        <nav>
+        <ul>
+            <li><img style="
+                margin-left: -400px;
+                margin-bottom: -5px;"
+                src='/static/images/fluidbusiness.ru' width="30" height="25"></li>
+            <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+            <li><a href="{{ url_for('HomeView:get') }}"><span>Home</span></a></li>
+            <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+            <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+            <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+            <li class='last'><a href="{{url_for('LogistsView:get')}}"><span>Logists</span></a></li>
+            <li class='last'><a href="{{url_for('PaymentsView:get')}}"><span>Payments</span></a></li>
+            <div class="profile">
+                <li ><a href="#"><span>{{current_user.email}}</span></a></li>
+            </div>
+         </ul>
+        </nav>
+    </div>
+        <div id="content">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                     {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <form method='post' action="{{ url_for('AuthView:post') }}">
+                <h2>Login</h2>
+                <input placeholder="Login" type="text" name="login">
+                <input placeholder="Password" type="password" name="password">
+                <button type="submit">LOGIN</button>
+            </form>
+
+        </div>
+
+        <div id="footer">
+            There will be a section "About me"
+        </div>
+
+</body>
+</html>
+
+

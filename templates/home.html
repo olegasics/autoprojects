@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Projects</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/templates/create_entity.js')}}"></script>
+</head>
+<body>
+<div id="main">
+    <div id="cssmenu">
+
+        <nav>
+        <ul>
+            <li><img style="
+                margin-left: -400px;
+                margin-bottom: -5px;"
+                src='/static/images/fluidbusiness.ru' width="40" height="25"></li>
+            <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+            <li><a href="{{ url_for('HomeView:get') }}"><span>Home</span></a></li>
+            <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+            <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+            <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+            <li class='last'><a href="{{url_for('LogistsView:get')}}"'><span>Logists</span></a></li>
+            <li class='last'><a href="{{url_for('PaymentsView:get')}}"'><span>Payments</span></a></li>
+         </ul>
+        </nav>
+    </div>
+        <div id="menu">
+
+        </div>
+        <div id="content">
+
+           <a href="/auth" >Авторизация</a>
+           <a href="/reg" >Регистрация</a>
+        </div>
+
+        <div id="footer">
+            Development by Oleg Maslo
+        </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Настройки движения груза</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/templates/checkbox.js')}}"></script>
+</head>
+<body>
+<div id="main">
+    <h1>Welcome</h1>
+        <div id="menu">
+
+            <p><a href="{{ url_for('auth_api')}}">Registration</a></p>
+            <p><a href="{{ url_for('auth_api')}}">Auth</a></p>
+            <p><a href="{{ url_for('order_api')}}">Orders</a></p>
+            <p><a href="{{ url_for('project_api)}}">Project settings</a></p>
+            <p><a href="{{ url_for('manager_api)}}">Manager settings</a></p>
+
+
+        </div>
+        <div id="content">
+
+            <div id="logist-info">
+                quantity orders
+            </div>
+        </div>
+
+        <div id="footer">
+            There will be a section "About me"
+        </div>
+</div>
+</body>
+</html>

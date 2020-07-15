@@ -1,0 +1,1 @@
+delete from public.order where id not in(select max(id) from public.order group by doc_number);

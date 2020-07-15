@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Managers</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/menu-styles.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/templates/create_entity.js')}}"></script>
+</head>
+<body>
+<div id="main">
+        <div id="menu">
+            <div id="cssmenu">
+ 
+                <nav>
+                <ul>
+                    <li><img style="
+                        margin-left: -400px;
+                        margin-bottom: -5px;"
+                        src='/static/images/fluidbusiness.ru' width="40" height="25"></li>
+                    <li style="margin-left: -200px;"><a> <span>FLUIDBUSINESS GROUP</span></a></li>
+                    <li><a href='#'><span>Home</span></a></li>
+                    <li><a href="{{url_for('ProjectsView:get')}}"span>Projects</span></a></li>
+                    <li><a href="{{url_for('ManagersView:get')}}"><span>Managers</span></a></li>
+                    <li><a href="{{url_for('OrdersView:get')}}"><span>Orders</span></a></li>
+                    <li class='last'><a href="{{url_for('LogistsView:get')}}"'><span>Logists</span></a></li>
+                    <li class='last'><a href="{{url_for('PaymentsView:get')}}"'><span>Payments</span></a></li>
+                    <div class="profile">
+                        <li ><a href="#"><span>{{current_user.first_name}} {{current_user.last_name}}</span></a></li>
+                    </div>
+                 </ul>
+                </nav>
+            </div>
+
+            
+        </div>
+        <div id="content">
+
+            <div id="managers">
+                <form method="get" action="{{ url_for('ManagersView:get') }}">
+                    {% for manager in managers %}
+                        <p>{{manager.name}} | <a href="/managers/{{ manager.id }}">{{ manager.small_name}}</a> | {{manager.number_phone}}</p>
+                    {% endfor %}
+
+                </form>
+
+                
+                    <input id="manager-name" placeholder="Name" type="text">
+                    <input id="manager-small-name" placeholder="Small_name" type="text">
+                    <input id="manager-number-phone" placeholder="Number phone" type="text">
+                    <button id="create-manager" onclick="clickCreateManager()" type="submit">Create manager</button>
+            </div>
+        </div>
+
+        <div id="footer">
+            Development by Oleg Maslo
+        </div>
+</div>
+</body>
+</html>
